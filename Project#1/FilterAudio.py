@@ -16,7 +16,7 @@ filenameWave='./summer.wav'
 #filenameWave='./sunnyDay.wav'
 filenameWavefiltered='./Filtered.wav'
 filenameWavewithoutfilter='./Withoutfilter.wav'
-PowerBW=0.75
+PowerBW=0.4
 write=0
 read=0
 ################################################
