@@ -16,7 +16,7 @@ filenameWave='./summer.wav'
 #filenameWave='./sunnyDay.wav'
 filenameWavefiltered='./Filtered.wav'
 filenameWavewithoutfilter='./Withoutfilter.wav'
-PowerBW=0.85
+PowerBW=0.75
 write=0
 read=0
 ################################################
@@ -72,19 +72,19 @@ yinv= np.fft.ifft(Y).real # ifft computing and normalization
 Y_DS=np.roll(Y,n/2)
 Y_SS = Y[range(n/2)]
 
-fig, ax = plt.subplots(7, 1)
+fig, ax = plt.subplots(5, 1)
 ax[0].plot(t,y)
 ax[0].set_xlabel('Time')
 ax[0].set_ylabel('Amplitude')
-ax[1].plot(frq_SS,abs(Y_SS),'r') # plotting the spectrum
+#ax[1].plot(frq_SS,abs(Y_SS),'r') # plotting the spectrum
+#ax[1].set_xlabel('Freq (Hz)')
+#ax[1].set_ylabel('|Y(freq)|')
+ax[1].plot(frq_DS[n/4:3*n/4],abs(Y_DS[n/4:3*n/4]),'r') # plotting the spectrum
 ax[1].set_xlabel('Freq (Hz)')
 ax[1].set_ylabel('|Y(freq)|')
-ax[2].plot(frq_DS[n/4:3*n/4],abs(Y_DS[n/4:3*n/4]),'r') # plotting the spectrum
-ax[2].set_xlabel('Freq (Hz)')
-ax[2].set_ylabel('|Y(freq)|')
-ax[3].plot(t,yinv,'g') # plotting the spectrum
-ax[3].set_xlabel('Time')
-ax[3].set_ylabel('Amplitude')
+#ax[3].plot(t,yinv,'g') # plotting the spectrum
+#ax[3].set_xlabel('Time')
+#ax[3].set_ylabel('Amplitude')
 
 #plt.show()
 y=np.array(y)
@@ -136,18 +136,18 @@ while (abs(Bold - B) > 0) and B > 1:
    print('Power of the filtered wave (DS frequency domain)={} Watts'.format(Power_freq_DS_filtered))
    print('Energy Ratio (filtered / original) = {}%'.format(((Energy_time_filtered/Energy_time))*100))
 
+   ax[2].clear()
+   ax[2].plot(frq_DS[n/4:3*n/4],abs(Mask_DS[n/4:3*n/4]),'r') # plotting the spectrum
+   ax[2].set_xlabel('Freq (Hz)')
+   ax[2].set_ylabel('|H(freq)|')
+   ax[3].clear()
+   ax[3].plot(frq_DS[n/4:3*n/4],abs(Yf_DS[n/4:3*n/4]),'r') # plotting the spectrum
+   ax[3].set_xlabel('Freq (Hz)')
+   ax[3].set_ylabel('|Y(freq)|')
    ax[4].clear()
-   ax[4].plot(frq_DS[n/4:3*n/4],abs(Mask_DS[n/4:3*n/4]),'r') # plotting the spectrum
-   ax[4].set_xlabel('Freq (Hz)')
-   ax[4].set_ylabel('|Y(freq)|')
-   ax[5].clear()
-   ax[5].plot(frq_DS[n/4:3*n/4],abs(Yf_DS[n/4:3*n/4]),'r') # plotting the spectrum
-   ax[5].set_xlabel('Freq (Hz)')
-   ax[5].set_ylabel('|Y(freq)|')
-   ax[6].clear()
-   ax[6].plot(t,yinv,'g') # plotting the spectrum
-   ax[6].set_xlabel('Time')
-   ax[6].set_ylabel('Amplitude')
+   ax[4].plot(t,yinv,'g') # plotting the spectrum
+   ax[4].set_xlabel('Time')
+   ax[4].set_ylabel('Amplitude')
    plt.pause(0.3)
 
    if (Energy_time_filtered > PowerBW*Energy_time):
@@ -159,15 +159,15 @@ while (abs(Bold - B) > 0) and B > 1:
 
 wavfile.write(filenameWavefiltered, rate, yinv_int)
 
-ax[4].plot(frq_DS[n/4:3*n/4],abs(Mask_DS[n/4:3*n/4]),'r') # plotting the spectrum
-ax[4].set_xlabel('Freq (Hz)')
-ax[4].set_ylabel('|Y(freq)|')
-ax[5].plot(frq_DS[n/4:3*n/4],abs(Yf_DS[n/4:3*n/4]),'r') # plotting the spectrum
-ax[5].set_xlabel('Freq (Hz)')
-ax[5].set_ylabel('|Y(freq)|')
-ax[6].plot(t,yinv,'g') # plotting the spectrum
-ax[6].set_xlabel('Time')
-ax[6].set_ylabel('Amplitude')
+ax[2].plot(frq_DS[n/4:3*n/4],abs(Mask_DS[n/4:3*n/4]),'r') # plotting the spectrum
+ax[2].set_xlabel('Freq (Hz)')
+ax[2].set_ylabel('|H(freq)|')
+ax[3].plot(frq_DS[n/4:3*n/4],abs(Yf_DS[n/4:3*n/4]),'r') # plotting the spectrum
+ax[3].set_xlabel('Freq (Hz)')
+ax[3].set_ylabel('|Y(freq)|')
+ax[4].plot(t,yinv,'g') # plotting the spectrum
+ax[4].set_xlabel('Time')
+ax[4].set_ylabel('Amplitude')
 
 Energy_time=np.sum(data.astype(float)**2)
 Power_time=1.0/(2*(data.size)+1)*np.sum(data.astype(float)**2)/rate
